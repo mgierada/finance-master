@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "analyzer"
+version = "0.1.0"
+description = ""
+authors = ["Maciej Gierada <maciek.gierada@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pandas = "^2.0.0"
+jupyterlab = "^3.6.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
