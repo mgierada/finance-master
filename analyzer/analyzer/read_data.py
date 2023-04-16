@@ -23,18 +23,23 @@ def get_spending_data(df: pd.DataFrame) -> pd.DataFrame:
     return df[df["amount"] < 0].set_index("date")
 
 
-def get_income_data_per_month(df: pd.DataFrame, month_number: int) -> pd.DataFrame:
+def get_income_data_per_month(
+    df: pd.DataFrame, month_number: int, year: int
+) -> pd.DataFrame:
     df = get_income_data(df)
-    return get_data_per_month(df, month_number)
+    return get_data_per_month(df, month_number, year)
 
 
-def get_spending_data_per_month(df: pd.DataFrame, month_number: int) -> pd.DataFrame:
+def get_spending_data_per_month(
+    df: pd.DataFrame, month_number: int, year: int
+) -> pd.DataFrame:
     df = get_income_data(df)
-    return get_data_per_month(df, month_number)
+    return get_data_per_month(df, month_number, year)
 
 
-def get_data_per_month(df: pd.DataFrame, month_number: int) -> pd.DataFrame:
-    # return df.groupby(pd.Grouper(freq="M")).sum()
-    df.loc[:, "date"] = pd.to_datetime(df["date"])
-    df[df["date"].dt.month == month_number]
-    return df
+def get_data_per_month(df: pd.DataFrame, month_number: int, year: int) -> pd.DataFrame:
+    df_copy = df.copy()
+    df_copy.loc[:, "date"] = pd.to_datetime(df_copy["date"])
+    return df_copy[
+        df_copy["date"].dt.month == month_number and df_copy["date"].dt.year == year
+    ]
