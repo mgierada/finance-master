@@ -9,9 +9,7 @@ def read_and_clean_data() -> pd.DataFrame:
     """
     Read the data from the csv file and clean it.
     """
-    print(os.getcwd())
     path_to_csv = os.path.join(os.path.dirname(__file__), "data.csv")
-    print(path_to_csv)
     raw_dataframe = pd.read_csv(path_to_csv, sep=";", index_col=False)
     raw_dataframe = raw_dataframe.rename(columns=COLUMNS)
     raw_dataframe["amount"] = raw_dataframe["raw_amount"].str.extract("([\d,-\. ]+)")
@@ -131,5 +129,3 @@ if __name__ == "__main__":
     df = read_and_clean_data()
     summary_by_month = get_summary_by_month(df)
     summary_by_year = get_summary_by_year(df)
-    # print(summary_by_year)
-    print(summary_by_month)

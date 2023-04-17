@@ -1,8 +1,7 @@
 from fastapi import FastAPI
+from controllers import summary_controller
+
 
 app = FastAPI()
 
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+app.include_router(summary_controller.router, prefix="/summary", tags=["summary"])
