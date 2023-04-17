@@ -3,5 +3,5 @@ COLUMNS = {
     "#Opis operacji": "description",
     "#Rachunek": "account",
     "#Kategoria": "category",
-    "#Kwota": "raw_amount"
+    "#Kwota": "raw_amount",
 }

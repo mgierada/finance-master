@@ -1,12 +1,17 @@
-from analyzer.constants import COLUMNS
 import pandas as pd
+import os
+
+from analyzer.constants import COLUMNS
 
 
 def read_and_clean_data() -> pd.DataFrame:
     """
     Read the data from the csv file and clean it.
     """
-    raw_dataframe = pd.read_csv("data.csv", sep=";", index_col=False)
+    print(os.getcwd())
+    path_to_csv = os.path.join(os.path.dirname(__file__), "data.csv")
+    print(path_to_csv)
+    raw_dataframe = pd.read_csv(path_to_csv, sep=";", index_col=False)
     raw_dataframe = raw_dataframe.rename(columns=COLUMNS)
     raw_dataframe["amount"] = raw_dataframe["raw_amount"].str.extract("([\d,-\. ]+)")
     raw_dataframe["amount"] = raw_dataframe["amount"].str.replace(" ", "")
@@ -88,3 +93,8 @@ def get_summary_data(cleaned_df: pd.DataFrame) -> pd.DataFrame:
     summary["income_pct_change"] = summary["income"].pct_change() * 100
     summary["profit"] = summary["income"] + summary["expense"]
     return summary
+
+
+if __name__ == "__main__":
+    df = read_and_clean_data()
+    print(df)
