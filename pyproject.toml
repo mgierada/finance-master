@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "analyzer"
+name = "finance-analyzer"
 version = "0.1.0"
 description = ""
 authors = ["Maciej Gierada <maciek.gierada@gmail.com>"]
@@ -10,6 +10,8 @@ python = "^3.11"
 pandas = "^2.0.0"
 jupyterlab = "^3.6.3"
 black = "^23.3.0"
+fastapi = "^0.95.1"
+uvicorn = "^0.21.1"
 
 
 [build-system]

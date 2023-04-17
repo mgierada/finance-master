@@ -2,7 +2,7 @@ import pandas as pd
 import os
 import typing as t
 
-from analyzer.constants import COLUMNS
+from finance_analyzer.constants import COLUMNS
 
 
 def read_and_clean_data() -> pd.DataFrame:
