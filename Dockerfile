@@ -14,11 +14,13 @@ RUN apt-get update \
 
 # install python dependencies
 RUN pip install --upgrade pip
-COPY ./pyproject.toml /src/pyproject.toml
-COPY ./poetry.lock /src/poetry.lock
+# copy poetry.lock and pyproject.toml
+COPY ../pyproject.toml ../poetry.lock /src/
 RUN pip install poetry
-RUN poetry config virtualenvs.create false
-RUN poetry install
+# install project dependencies
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-interaction --no-ansi
 
 # copy project
 COPY ./src /src/
+
