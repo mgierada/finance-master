@@ -12,6 +12,9 @@ def read_and_clean_data() -> pd.DataFrame:
     path_to_csv = os.path.join(os.path.dirname(__file__), "data.csv")
     raw_dataframe = pd.read_csv(path_to_csv, sep=";", index_col=False)
     raw_dataframe = raw_dataframe.rename(columns=COLUMNS)
+    raw_dataframe["description"] = raw_dataframe["description"].apply(
+        lambda x: " ".join(x.strip().split())
+    )
     raw_dataframe["amount"] = raw_dataframe["raw_amount"].str.extract("([\d,-\. ]+)")
     raw_dataframe["amount"] = raw_dataframe["amount"].str.replace(" ", "")
     raw_dataframe["amount"] = (
@@ -127,5 +130,6 @@ def summary(income_totals: pd.DataFrame, expense_totals: pd.DataFrame) -> pd.Dat
 
 if __name__ == "__main__":
     df = read_and_clean_data()
-    summary_by_month = get_summary_by_month(df)
-    summary_by_year = get_summary_by_year(df)
+    print(df)
+    # summary_by_month = get_summary_by_month(df)
+    # summary_by_year = get_summary_by_year(df)
