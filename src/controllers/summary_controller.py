@@ -1,7 +1,7 @@
 import json
 
 from fastapi.responses import JSONResponse
-from src.finance_analyzer.read_data import (
+from finance_analyzer.read_data import (
     get_summary_by_month,
     get_summary_by_year,
     read_and_clean_data,

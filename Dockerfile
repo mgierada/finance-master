@@ -21,4 +21,4 @@ RUN poetry config virtualenvs.create false
 RUN poetry install
 
 # copy project
-COPY ./src /app/src/
+COPY ./src /src/
