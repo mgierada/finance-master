@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from controllers import summary_controller
 
+from src.controllers import summary_controller
 
 app = FastAPI()
 
