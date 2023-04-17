@@ -94,7 +94,7 @@ def get_summary_data(cleaned_df: pd.DataFrame) -> pd.DataFrame:
     summary["expense_pct_change"] = summary["expense"].pct_change() * 100
     summary["income_pct_change"] = summary["income"].pct_change() * 100
     summary["profit"] = summary["income"] + summary["expense"]
-    return summary
+    return summary.sort_values(by="date", ascending=False)
 
 
 if __name__ == "__main__":
