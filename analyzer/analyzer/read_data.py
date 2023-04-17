@@ -89,7 +89,7 @@ def get_summary_data(cleaned_df: pd.DataFrame) -> pd.DataFrame:
     income_totals = get_totals_all_months(income_data)
     expense_totals = get_totals_all_months(expense_data)
 
-    summary = pd.merge(income_totals, expense_totals, on="date")
+    summary = pd.merge(expense_totals, income_totals, on="date")
     summary.rename(columns={"amount_x": "expense", "amount_y": "income"}, inplace=True)
     summary["expense_pct_change"] = summary["expense"].pct_change() * 100
     summary["income_pct_change"] = summary["income"].pct_change() * 100
