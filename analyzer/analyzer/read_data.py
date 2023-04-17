@@ -86,7 +86,7 @@ def get_yearly_totals(df: pd.DataFrame) -> pd.DataFrame:
     return df.groupby(df["date"].dt.strftime("%Y"))["amount"].sum().to_frame()
 
 
-def get_summary_data(cleaned_df: pd.DataFrame) -> pd.DataFrame:
+def get_summary_by_month(cleaned_df: pd.DataFrame) -> pd.DataFrame:
     """
     For a given cleaned dataframe, return a summary dataframe with the total income and expense per
     month and other useful information.
@@ -105,7 +105,27 @@ def get_summary_data(cleaned_df: pd.DataFrame) -> pd.DataFrame:
     return summary.sort_values(by="date", ascending=False)
 
 
+def get_summary_by_year(cleaned_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    For a given cleaned dataframe, return a summary dataframe with the total income and expense per
+    year and other useful information.
+    """
+    income_data = get_income_data(cleaned_df)
+    expense_data = get_expense_data(cleaned_df)
+
+    income_totals = get_yearly_totals(income_data)
+    expense_totals = get_yearly_totals(expense_data)
+
+    summary = pd.merge(expense_totals, income_totals, on="date")
+    summary.rename(columns={"amount_x": "expense", "amount_y": "income"}, inplace=True)
+    summary["expense_pct_change"] = summary["expense"].pct_change() * 100
+    summary["income_pct_change"] = summary["income"].pct_change() * 100
+    summary["profit"] = summary["income"] + summary["expense"]
+    return summary.sort_values(by="date", ascending=False)
+
+
 if __name__ == "__main__":
     df = read_and_clean_data()
-    summary = get_summary_data(df)
-    print(summary)
+    # summary_by_month = get_summary_by_month(df)
+    summary_by_year = get_summary_by_year(df)
+    print(summary_by_year)
