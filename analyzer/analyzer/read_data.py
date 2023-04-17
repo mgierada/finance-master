@@ -20,21 +20,23 @@ def read_and_clean_data() -> pd.DataFrame:
     )
     raw_dataframe["currency"] = raw_dataframe["raw_amount"].str.extract("([A-Z]{3})")
     clean_dataframe = raw_dataframe.drop(["raw_amount", "Unnamed: 5"], axis=1)
-    return clean_dataframe
+    df_copy = clean_dataframe.copy()
+    df_copy["date"] = pd.to_datetime(df_copy["date"])
+    return df_copy
 
 
 def get_income_data(df: pd.DataFrame) -> pd.DataFrame:
     """
     For a given cleaned dataframe, return a dataframe with only the income data.
     """
-    return df[df["amount"] > 0].set_index("date")
+    return df[df["amount"] > 0]
 
 
 def get_expense_data(df: pd.DataFrame) -> pd.DataFrame:
     """
     For a given cleaned dataframe, return a dataframe with only the expense data.
     """
-    return df[df["amount"] < 0].set_index("date")
+    return df[df["amount"] < 0]
 
 
 def get_income_data_per_month(
@@ -54,6 +56,7 @@ def get_expense_data_per_month(
     For a given cleaned dataframe, return a dataframe with the expense data for a given month and year.
     """
     df = get_income_data(df)
+
     return get_data_per_month(df, month_number, year)
 
 
@@ -62,7 +65,6 @@ def get_data_per_month(df: pd.DataFrame, month_number: int, year: int) -> pd.Dat
     For a given cleaned dataframe, return a dataframe with the data for a given month and year.
     """
     df_copy = df.copy()
-    df_copy.loc[:, "date"] = pd.to_datetime(df_copy["date"])
     df_copy["date"] = pd.to_datetime(df_copy["date"])
     return df_copy[
         (df_copy["date"].dt.month == month_number) & (df_copy["date"].dt.year == year)
@@ -97,4 +99,5 @@ def get_summary_data(cleaned_df: pd.DataFrame) -> pd.DataFrame:
 
 if __name__ == "__main__":
     df = read_and_clean_data()
-    print(df)
+    summary = get_summary_data(df)
+    print(summary)
