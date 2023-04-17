@@ -71,11 +71,19 @@ def get_data_per_month(df: pd.DataFrame, month_number: int, year: int) -> pd.Dat
     ]
 
 
-def get_totals_all_months(df: pd.DataFrame) -> pd.DataFrame:
+def get_monthly_totals(df: pd.DataFrame) -> pd.DataFrame:
     """
     For a given income or expense dataframe, return a dataframe with the total amount of income or expense per month.
     """
     return df.groupby(df["date"].dt.strftime("%Y-%m"))["amount"].sum().to_frame()
+
+
+def get_yearly_totals(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    For a given income or expense dataframe, return a dataframe with the total amount of income or
+    expense per year.
+    """
+    return df.groupby(df["date"].dt.strftime("%Y"))["amount"].sum().to_frame()
 
 
 def get_summary_data(cleaned_df: pd.DataFrame) -> pd.DataFrame:
@@ -86,8 +94,8 @@ def get_summary_data(cleaned_df: pd.DataFrame) -> pd.DataFrame:
     income_data = get_income_data(cleaned_df)
     expense_data = get_expense_data(cleaned_df)
 
-    income_totals = get_totals_all_months(income_data)
-    expense_totals = get_totals_all_months(expense_data)
+    income_totals = get_monthly_totals(income_data)
+    expense_totals = get_monthly_totals(expense_data)
 
     summary = pd.merge(expense_totals, income_totals, on="date")
     summary.rename(columns={"amount_x": "expense", "amount_y": "income"}, inplace=True)
