@@ -12,6 +12,7 @@ jupyterlab = "^3.6.3"
 black = "^23.3.0"
 fastapi = "^0.95.1"
 uvicorn = "^0.21.1"
+sqlalchemy = "^2.0.9"
 
 
 [build-system]
