@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from controllers import transactions_controller, summary_controller
 from models.transactions import Transaction
 
-from .database import engine, SessionLocal
+from database import engine, SessionLocal
 
 Transaction.metadata.create_all(bind=engine)
 
