@@ -18,8 +18,16 @@ RUN pip install --upgrade pip
 COPY ../pyproject.toml ../poetry.lock /src/
 RUN pip install poetry
 # install project dependencies
-RUN poetry config virtualenvs.create false \
-    && poetry install --no-interaction --no-ansi
+RUN apt-get update && \
+    apt-get install -y libpq-dev && \
+    poetry config virtualenvs.create false && \
+    poetry install --no-root --no-dev && \
+    apt-get remove -y libpq-dev && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
+
+# RUN poetry config virtualenvs.create false \
+#     && poetry install --no-interaction --no-ansi
 
 # copy project
 COPY ./src /src/
