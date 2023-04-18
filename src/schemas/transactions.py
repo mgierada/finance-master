@@ -10,6 +10,10 @@ class TransactionBase(BaseModel):
     currency: str
 
 
+class TransactionCreate(TransactionBase):
+    pass
+
+
 class Transactions(TransactionBase):
     id: int
 
