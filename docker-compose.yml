@@ -13,13 +13,20 @@ services:
     env_file:
       - .env
     restart: on-failure
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/finance_master
 
   db:
-    image: mongo
-    # environment:
-    #   - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
-    #   - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+    image: postgres:latest
     ports:
-      - "27017:27017"
+      - 5432:5432
+    restart: always
     volumes:
-      - ./mongo_data:/data/db
+      - database_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db_name
+
+volumes:
+  database_data:
