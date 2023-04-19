@@ -139,3 +139,7 @@ mongo_data/
 
 # postgres files
 postgres-data
+
+*.xml
+*.iml
+*.idea

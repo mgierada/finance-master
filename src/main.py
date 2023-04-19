@@ -1,21 +1,11 @@
 from fastapi import FastAPI
-from controllers import transactions_controller, summary_controller
+from controllers import db_controller, transactions_controller, summary_controller
 from models.transactions import Transaction
-
-from database import engine, SessionLocal
+from database import engine
 
 Transaction.metadata.create_all(bind=engine)
 
 app = FastAPI()
-
-
-# Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 app.include_router(
@@ -27,4 +17,9 @@ app.include_router(
     transactions_controller.router,
     prefix="/transactions",
     tags=["transactions"],
+)
+app.include_router(
+    db_controller.router,
+    prefix="/db",
+    tags=["db"],
 )
