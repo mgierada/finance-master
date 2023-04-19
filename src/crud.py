@@ -17,3 +17,7 @@ def create_transaction(db: Session, transaction: TransactionCreate):
     db.commit()
     db.refresh(db_transaction)
     return db_transaction
+
+
+def filter_transactions(db: Session, **kwargs):
+    return db.query(Transaction).filter_by(**kwargs).all()

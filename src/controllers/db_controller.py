@@ -22,27 +22,34 @@ async def populate_db(db: Session = Depends(get_db)):
     df = read_and_clean_data()
     json_data = df.to_json(orient="table")
 
-    raw_payload = json.loads(json_data)["data"][0]
-    print("raw_payload")
-    print(raw_payload)
-    transaction = {"date": raw_payload["date"]}
-    print("transaction")
-    print(transaction)
+    raw_payloads = json.loads(json_data)["data"]
+    for raw_payload in raw_payloads:
+        # create a new TransactionCreate object
+        transaction_create = schemas.TransactionCreate(
+            uuid=uuid.uuid4(),
+            date=convert_date(raw_payload["date"]),
+            description=raw_payload["description"],
+            account=raw_payload["account"],
+            category=raw_payload["category"],
+            amount=int(raw_payload["amount"]),  # convert to int
+            currency=raw_payload["currency"],
+        )
+        # If date, category and amount and description already exists in db, skip that transaction
+        if is_entry_already_in_db(db, transaction_create):
+            # return JSONResponse(content={"message": "Entry already exists"})
+            pass
+        # return crud.create_transaction(db, transaction_create)
+        crud.create_transaction(db, transaction_create)
 
-    # create a new TransactionCreate object
-    transaction_create = schemas.TransactionCreate(
-        uuid=uuid.uuid4(),
-        date=convert_date(raw_payload["date"]),
-        description=raw_payload["description"],
-        account=raw_payload["account"],
-        category=raw_payload["category"],
-        amount=int(raw_payload["amount"]),  # convert to int
-        currency=raw_payload["currency"],
+    return JSONResponse(content={"message": "Entires added"})
+
+
+def is_entry_already_in_db(db: Session, transaction: schemas.TransactionCreate):
+    dups = crud.filter_transactions(
+        db,
+        date=transaction.date,
+        description=transaction.description,
+        category=transaction.category,
+        amount=transaction.amount,
     )
-    print("transaction_create")
-    print(transaction_create.dict())
-
-    # return crud.create_transaction(db, transaction)
-    return crud.create_transaction(db, transaction_create)
-
-    # return JSONResponse(content=json.loads(json_data)["data"])
+    return True if dups else False
