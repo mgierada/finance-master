@@ -10,7 +10,7 @@ ENV PYTHONUNBUFFERED 1
 
 # install system dependencies
 RUN apt-get update \
-    && apt-get -y install netcat gcc python3-dev
+    && apt-get -y install netcat gcc python3-dev libpq5 
 
 # install python dependencies
 RUN pip install --upgrade pip
@@ -18,9 +18,15 @@ RUN pip install --upgrade pip
 COPY ../pyproject.toml ../poetry.lock /src/
 RUN pip install poetry
 # install project dependencies
-RUN poetry config virtualenvs.create false \
-    && poetry install --no-interaction --no-ansi
+RUN apt-get update && \
+    apt-get install -y libpq-dev && \
+    poetry config virtualenvs.create false && \
+    poetry install --no-root --no-dev && \
+    apt-get remove -y libpq-dev && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
 
 # copy project
 COPY ./src /src/
+
 
