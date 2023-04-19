@@ -8,7 +8,14 @@ import uuid
 class Transaction(Base):
     __tablename__ = "transactions"
 
-    uuid = Column(String, primary_key=True, index=True, unique=True)
+    id = Column(
+        UUID(as_uuid=True),
+        # String,
+        primary_key=True,
+        index=True,
+        default=uuid.uuid4,
+        unique=True,
+    )
     description = Column(String)
     date = Column(String)
     account = Column(String)

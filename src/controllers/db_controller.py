@@ -26,7 +26,6 @@ async def populate_db(db: Session = Depends(get_db)):
     for raw_payload in raw_payloads:
         # create a new TransactionCreate object
         transaction_create = schemas.TransactionCreate(
-            uuid=uuid.uuid4(),
             date=convert_date(raw_payload["date"]),
             description=raw_payload["description"],
             account=raw_payload["account"],

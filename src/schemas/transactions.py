@@ -1,9 +1,8 @@
 import uuid
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class TransactionBase(BaseModel):
-    uuid: uuid.UUID
     description: str
     date: str
     account: str
@@ -17,8 +16,7 @@ class TransactionCreate(TransactionBase):
 
 
 class Transactions(TransactionBase):
-    # uuid: uuid.UUID
-    pass
+    id: uuid.UUID = Field(..., alias="id")
 
     class Config:
         orm_mode = True
