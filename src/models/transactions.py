@@ -10,7 +10,6 @@ class Transaction(Base):
 
     id = Column(
         UUID(as_uuid=True),
-        # String,
         primary_key=True,
         index=True,
         default=uuid.uuid4,
