@@ -10,7 +10,7 @@ from finance_analyzer.read_data import (
 from fastapi import APIRouter, Depends
 import schemas
 from sqlalchemy.orm import Session
-from utils.check_cuplicates import is_entry_already_in_db
+from utils.check_duplicates import is_entry_already_in_db
 
 from utils.convert_data import convert_date
 
