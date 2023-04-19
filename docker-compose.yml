@@ -2,7 +2,9 @@ version: "3"
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
     volumes:
       - ./src:/src
@@ -14,7 +16,7 @@ services:
       - .env
     restart: on-failure
     environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/finance_master
+      - DATABASE_URL=postgresql://user:password@localhost/finance_master
 
   db:
     image: postgres:latest
@@ -22,11 +24,13 @@ services:
       - 5432:5432
     restart: always
     volumes:
-      - database_data:/var/lib/postgresql/data
+      - ./postgres-data:/var/lib/postgresql/data
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: db_name
+      POSTGRES_DB: finance_master
+      POSTGRES_INITDB_ARGS: "--data-checksums"
 
 volumes:
   database_data:

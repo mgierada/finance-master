@@ -133,6 +133,9 @@ dmypy.json
 # any source .csv files
 *.csv
 
-#mongo db files
+# mongo db files
 *.bson
 mongo_data/
+
+# postgres files
+postgres-data

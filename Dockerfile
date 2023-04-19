@@ -10,7 +10,7 @@ ENV PYTHONUNBUFFERED 1
 
 # install system dependencies
 RUN apt-get update \
-    && apt-get -y install netcat gcc python3-dev libpq5
+    && apt-get -y install netcat gcc python3-dev libpq5 
 
 # install python dependencies
 RUN pip install --upgrade pip
@@ -26,9 +26,7 @@ RUN apt-get update && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
-# RUN poetry config virtualenvs.create false \
-#     && poetry install --no-interaction --no-ansi
-
 # copy project
 COPY ./src /src/
+
 
