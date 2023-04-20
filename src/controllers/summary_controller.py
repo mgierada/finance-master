@@ -10,7 +10,7 @@ from finance_analyzer.read_data import (
     read_and_clean_data,
 )
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 router = APIRouter()
@@ -21,6 +21,9 @@ async def summary_monthly(
     db: Session = Depends(get_db), with_schema: bool = False
 ) -> JSONResponse:
     all_transactions = crud.get_transactions(db, retrieve_all_entries=True)
+    print(all_transactions)
+    if not all_transactions:
+        raise HTTPException(status_code=404, detail="No transactions found")
     # convert all_transactions to list of dicts
     all_transactions = [transaction.__dict__ for transaction in all_transactions]
     # drop _sa_instance_state and id keys
