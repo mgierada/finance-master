@@ -21,7 +21,7 @@ async def get_tranactions(
     skip: int = 0,
     limit: int = 100,
 ):
-    return crud.get_transactions(db, skip, limit)
+    return crud.get_transactions(db, skip, limit, retrieve_all_entries=False)
 
 
 @router.delete("/")

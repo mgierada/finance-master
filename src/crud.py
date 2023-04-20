@@ -46,16 +46,26 @@ def filter_transactions(db: Session, **kwargs) -> t.List[Transaction]:
 
 
 def get_transactions(
-    db: Session, skip: int = 0, limit: int = 100
+    db: Session,
+    skip: int = 0,
+    limit: int = 100,
+    retrieve_all_entries: bool = False,
 ) -> t.List[Transaction]:
     """Get all transactions from the database
 
     Args:
         db (Session): The database session
+        retrieve_all_entries (bool, optional): Whether to retrieve all entries or not. Defaults to False.
+        skip (int, optional): The number of entries to skip. Defaults to 0.
+        limit (int, optional): The number of entries to retrieve. Defaults to 100.
     Returns:
         t.List[Transaction]: The transactions
     """
-    return db.query(Transaction).offset(skip).limit(limit).all()
+    return (
+        db.query(Transaction).all()
+        if retrieve_all_entries
+        else db.query(Transaction).offset(skip).limit(limit).all()
+    )
 
 
 def remove_transactions(db: Session) -> int:
