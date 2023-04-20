@@ -45,7 +45,9 @@ def filter_transactions(db: Session, **kwargs) -> t.List[Transaction]:
     return db.query(Transaction).filter_by(**kwargs).all()
 
 
-def get_transactions(db: Session) -> t.List[Transaction]:
+def get_transactions(
+    db: Session, skip: int = 0, limit: int = 100
+) -> t.List[Transaction]:
     """Get all transactions from the database
 
     Args:
@@ -53,7 +55,7 @@ def get_transactions(db: Session) -> t.List[Transaction]:
     Returns:
         t.List[Transaction]: The transactions
     """
-    return db.query(Transaction).all()
+    return db.query(Transaction).offset(skip).limit(limit).all()
 
 
 def remove_transactions(db: Session) -> int:

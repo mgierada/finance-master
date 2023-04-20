@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Float, String
 from sqlalchemy.dialects.postgresql import UUID
 
 from database import Base
@@ -19,5 +19,5 @@ class Transaction(Base):
     date = Column(String)
     account = Column(String)
     category = Column(String)
-    amount = Column(Integer)
+    amount = Column(Float)
     currency = Column(String)

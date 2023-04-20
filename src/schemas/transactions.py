@@ -7,7 +7,7 @@ class TransactionBase(BaseModel):
     date: str
     account: str
     category: str
-    amount: int
+    amount: float
     currency: str
 
 

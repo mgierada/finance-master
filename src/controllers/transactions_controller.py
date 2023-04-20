@@ -18,8 +18,10 @@ router = APIRouter()
 @router.get("/", response_model=t.List[schemas.Transactions])
 async def get_tranactions(
     db: Session = Depends(get_db),
+    skip: int = 0,
+    limit: int = 100,
 ):
-    return crud.get_transactions(db)
+    return crud.get_transactions(db, skip, limit)
 
 
 @router.delete("/")

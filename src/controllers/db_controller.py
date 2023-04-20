@@ -30,7 +30,7 @@ async def populate_db(db: Session = Depends(get_db)) -> JSONResponse:
             description=raw_payload["description"],
             account=raw_payload["account"],
             category=raw_payload["category"],
-            amount=int(raw_payload["amount"]),
+            amount=float(raw_payload["amount"]),
             currency=raw_payload["currency"],
         )
         # If date, category and amount and description already exists in db, skip that transaction
@@ -39,4 +39,6 @@ async def populate_db(db: Session = Depends(get_db)) -> JSONResponse:
         added_transactions += 1
         crud.create_transaction(db, transaction_create)
 
-    return JSONResponse(content={"message": f"{added_transactions} entires added"})
+    return JSONResponse(
+        content={"message": f"{added_transactions} new transactions added"}
+    )
