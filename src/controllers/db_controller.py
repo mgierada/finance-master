@@ -21,8 +21,8 @@ router = APIRouter()
 async def populate_db(db: Session = Depends(get_db)) -> JSONResponse:
     df = read_and_clean_data()
     json_data = df.to_json(orient="table")
-
     raw_payloads = json.loads(json_data)["data"]
+    added_transactions = 0
     for raw_payload in raw_payloads:
         # create a new TransactionCreate object
         transaction_create = schemas.TransactionCreate(
@@ -36,6 +36,7 @@ async def populate_db(db: Session = Depends(get_db)) -> JSONResponse:
         # If date, category and amount and description already exists in db, skip that transaction
         if is_entry_already_in_db(db, transaction_create):
             continue
+        added_transactions += 1
         crud.create_transaction(db, transaction_create)
 
-    return JSONResponse(content={"message": "Entires added"})
+    return JSONResponse(content={"message": f"{added_transactions} entires added"})
