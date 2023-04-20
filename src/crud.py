@@ -43,3 +43,27 @@ def filter_transactions(db: Session, **kwargs) -> t.List[Transaction]:
         t.List[Transaction]: The filtered transactions
     """
     return db.query(Transaction).filter_by(**kwargs).all()
+
+
+def get_transactions(db: Session) -> t.List[Transaction]:
+    """Get all transactions from the database
+
+    Args:
+        db (Session): The database session
+    Returns:
+        t.List[Transaction]: The transactions
+    """
+    return db.query(Transaction).all()
+
+
+def remove_transactions(db: Session) -> int:
+    """Remove all transactions from the database
+
+    Args:
+        db (Session): The database session
+    Returns:
+        int: The number of removed transactions
+    """
+    removed_transations = db.query(Transaction).delete()
+    db.commit()
+    return removed_transations

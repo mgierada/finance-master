@@ -1,19 +1,30 @@
 import json
+import crud
+from database import get_db
+import typing as t
 
 from fastapi.responses import JSONResponse
 from finance_analyzer.read_data import (
     read_and_clean_data,
 )
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+import schemas
+from sqlalchemy.orm import Session
 
 router = APIRouter()
 
 
-@router.get("/")
-async def tranactions(with_schema: bool = False) -> JSONResponse:
-    df = read_and_clean_data()
-    json_data = df.to_json(orient="table")
-    if with_schema:
-        return JSONResponse(content=json.loads(json_data))
-    return JSONResponse(content=json.loads(json_data)["data"])
+@router.get("/", response_model=t.List[schemas.Transactions])
+async def get_tranactions(
+    db: Session = Depends(get_db),
+):
+    return crud.get_transactions(db)
+
+
+@router.delete("/")
+async def remove_tranactions(db: Session = Depends(get_db)) -> JSONResponse:
+    number_of_removed_transactions = crud.remove_transactions(db)
+    return JSONResponse(
+        content={"message": f"{number_of_removed_transactions} transactions removed"}
+    )
