@@ -30,14 +30,12 @@ async def populate_db(db: Session = Depends(get_db)) -> JSONResponse:
             description=raw_payload["description"],
             account=raw_payload["account"],
             category=raw_payload["category"],
-            amount=int(raw_payload["amount"]),  # convert to int
+            amount=int(raw_payload["amount"]),
             currency=raw_payload["currency"],
         )
         # If date, category and amount and description already exists in db, skip that transaction
         if is_entry_already_in_db(db, transaction_create):
-            # return JSONResponse(content={"message": "Entry already exists"})
             continue
-        # return crud.create_transaction(db, transaction_create)
         crud.create_transaction(db, transaction_create)
 
     return JSONResponse(content={"message": "Entires added"})
