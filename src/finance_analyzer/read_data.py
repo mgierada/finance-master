@@ -2,15 +2,47 @@ import pandas as pd
 import os
 import typing as t
 
-from finance_analyzer.constants import COLUMNS
+from finance_analyzer.constants import COLUMNS, COLUMNS_TO_BE_DROPPED, CSV_HEADER
 
 
-def read_and_clean_data() -> pd.DataFrame:
+def get_data(csv_file: str) -> pd.DataFrame:
     """
     Read the data from the csv file and clean it.
     """
-    path_to_csv = os.path.join(os.path.dirname(__file__), "data.csv")
-    raw_dataframe = pd.read_csv(path_to_csv, sep=";", index_col=False)
+    raw_dataframe = read_data(csv_file)
+    clean_dataframe = clean_data(raw_dataframe)
+    return clean_dataframe
+
+
+def read_data(raw_csv_file: str) -> pd.DataFrame:
+    """
+    Read the data from the csv file and clean it.
+    """
+    formatted_csv = format_data(raw_csv_file)
+    raw_dataframe = pd.read_csv(formatted_csv, sep=";", index_col=False)
+    return raw_dataframe
+
+
+def format_data(raw_csv_file: str) -> str:
+    with open(raw_csv_file, "r", newline="") as f:
+        csvlines = f.readlines()
+    # Find the index of the header row
+    header_index = None
+    for i, line in enumerate(csvlines):
+        if line.startswith(CSV_HEADER):
+            header_index = i
+            break
+    # Remove everything before the header row
+    if header_index is not None:
+        csvlines = csvlines[header_index:]
+    path_to_new_csv = os.path.join(os.path.dirname(raw_csv_file), "clean_data.csv")
+    with open(path_to_new_csv, "w") as output_file:
+        for line in csvlines:
+            output_file.write(line)
+    return path_to_new_csv
+
+
+def clean_data(raw_dataframe: pd.DataFrame) -> pd.DataFrame:
     raw_dataframe = raw_dataframe.rename(columns=COLUMNS)
     raw_dataframe["description"] = raw_dataframe["description"].apply(
         lambda x: " ".join(x.strip().split())
@@ -21,10 +53,32 @@ def read_and_clean_data() -> pd.DataFrame:
         raw_dataframe["amount"].str.replace(",", ".").astype(float)
     )
     raw_dataframe["currency"] = raw_dataframe["raw_amount"].str.extract("([A-Z]{3})")
-    clean_dataframe = raw_dataframe.drop(["raw_amount", "Unnamed: 5"], axis=1)
+    clean_dataframe = raw_dataframe.drop(COLUMNS_TO_BE_DROPPED, axis=1)
     df_copy = clean_dataframe.copy()
     df_copy["date"] = pd.to_datetime(df_copy["date"])
     return df_copy
+
+
+# def read_and_clean_data() -> pd.DataFrame:
+#     """
+#     Read the data from the csv file and clean it.
+#     """
+#     path_to_csv = os.path.join(os.path.dirname(__file__), "data.csv")
+#     raw_dataframe = pd.read_csv(path_to_csv, sep=";", index_col=False)
+#     raw_dataframe = raw_dataframe.rename(columns=COLUMNS)
+#     raw_dataframe["description"] = raw_dataframe["description"].apply(
+#         lambda x: " ".join(x.strip().split())
+#     )
+#     raw_dataframe["amount"] = raw_dataframe["raw_amount"].str.extract("([\d,-\. ]+)")
+#     raw_dataframe["amount"] = raw_dataframe["amount"].str.replace(" ", "")
+#     raw_dataframe["amount"] = (
+#         raw_dataframe["amount"].str.replace(",", ".").astype(float)
+#     )
+#     raw_dataframe["currency"] = raw_dataframe["raw_amount"].str.extract("([A-Z]{3})")
+#     clean_dataframe = raw_dataframe.drop(["raw_amount", "Unnamed: 5"], axis=1)
+#     df_copy = clean_dataframe.copy()
+#     df_copy["date"] = pd.to_datetime(df_copy["date"])
+#     return df_copy
 
 
 def get_income_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -129,7 +183,8 @@ def summary(income_totals: pd.DataFrame, expense_totals: pd.DataFrame) -> pd.Dat
 
 
 if __name__ == "__main__":
-    df = read_and_clean_data()
+    path_to_csv = os.path.join(os.path.dirname(__file__), "list_of_operations.csv")
+    df = get_data(path_to_csv)
     print(df)
     # summary_by_month = get_summary_by_month(df)
     # summary_by_year = get_summary_by_year(df)
