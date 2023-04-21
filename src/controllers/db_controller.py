@@ -4,10 +4,10 @@ from database import get_db
 from fastapi.responses import JSONResponse
 
 from finance_analyzer.read_data import (
-    get_data,
+    convert_bytes_to_dataframe,
 )
 
-from fastapi import APIRouter, Depends, File, UploadFile
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 import schemas
 from sqlalchemy.orm import Session
 from utils.check_duplicates import is_entry_already_in_db
@@ -22,10 +22,11 @@ async def populate_db(
     db: Session = Depends(get_db), file: UploadFile = File(...)
 ) -> JSONResponse:
     try:
-        content = file.file.read()
-        df = get_data(content)
+        df = convert_bytes_to_dataframe(file.file.read())
     except Exception:
-        return {"message": "There was an error uploading the file"}
+        raise HTTPException(
+            status_code=400, detail="There was an error processing the file"
+        )
     finally:
         file.file.close()
     json_data = df.to_json(orient="table")
