@@ -1,3 +1,4 @@
+from io import BytesIO
 import pandas as pd
 import os
 import typing as t
@@ -5,7 +6,7 @@ import typing as t
 from finance_analyzer.constants import COLUMNS, COLUMNS_TO_BE_DROPPED, CSV_HEADER
 
 
-def get_data(csv_file: str) -> pd.DataFrame:
+def get_data(csv_file: bytes) -> pd.DataFrame:
     """
     Read the data from the csv file and clean it.
     """
@@ -14,32 +15,48 @@ def get_data(csv_file: str) -> pd.DataFrame:
     return clean_dataframe
 
 
-def read_data(raw_csv_file: str) -> pd.DataFrame:
+def read_data(raw_csv_file: bytes) -> pd.DataFrame:
     """
     Read the data from the csv file and clean it.
     """
     formatted_csv = format_data(raw_csv_file)
-    raw_dataframe = pd.read_csv(formatted_csv, sep=";", index_col=False)
+    raw_dataframe = pd.read_csv(BytesIO(formatted_csv), sep=";", index_col=False)
     return raw_dataframe
 
 
-def format_data(raw_csv_file: str) -> str:
-    with open(raw_csv_file, "r", newline="") as f:
-        csvlines = f.readlines()
-    # Find the index of the header row
+def format_data(raw_csv_file: bytes) -> bytes:
+    print("=" * 80)
+
+    # convert bytest to str
+    raw_csv_file_str = raw_csv_file.decode("utf-8")
+
+    # split by newline character
+    lines = raw_csv_file_str.split("\n")
+    # print(lines)
+
+    # with open(raw_csv_file, "r", newline="") as f:
+    #     csvlines = f.readlines()
+    # # Find the index of the header row
     header_index = None
-    for i, line in enumerate(csvlines):
+    for i, line in enumerate(lines):
         if line.startswith(CSV_HEADER):
             header_index = i
             break
-    # Remove everything before the header row
-    if header_index is not None:
-        csvlines = csvlines[header_index:]
-    path_to_new_csv = os.path.join(os.path.dirname(raw_csv_file), "clean_data.csv")
-    with open(path_to_new_csv, "w") as output_file:
-        for line in csvlines:
-            output_file.write(line)
-    return path_to_new_csv
+
+    # join lines starting from the header index
+    content = "\n".join(lines[header_index:])
+    # convert to bytes
+    content_bytes = content.encode("utf-8")
+    return content_bytes
+
+    # # Remove everything before the header row
+    # if header_index is not None:
+    #     csvlines = csvlines[header_index:]
+    # path_to_new_csv = os.path.join(os.path.dirname(raw_csv_file), "clean_data.csv")
+    # with open(path_to_new_csv, "w") as output_file:
+    #     for line in csvlines:
+    #         output_file.write(line)
+    # return path_to_new_csv
 
 
 def clean_data(raw_dataframe: pd.DataFrame) -> pd.DataFrame:

@@ -4,10 +4,10 @@ from database import get_db
 from fastapi.responses import JSONResponse
 
 from finance_analyzer.read_data import (
-    read_and_clean_data,
+    get_data,
 )
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, File, UploadFile
 import schemas
 from sqlalchemy.orm import Session
 from utils.check_duplicates import is_entry_already_in_db
@@ -18,8 +18,16 @@ router = APIRouter()
 
 
 @router.post("/populate", response_model=schemas.Transactions)
-async def populate_db(db: Session = Depends(get_db)) -> JSONResponse:
-    df = read_and_clean_data()
+async def populate_db(
+    db: Session = Depends(get_db), file: UploadFile = File(...)
+) -> JSONResponse:
+    try:
+        content = file.file.read()
+        df = get_data(content)
+    except Exception:
+        return {"message": "There was an error uploading the file"}
+    finally:
+        file.file.close()
     json_data = df.to_json(orient="table")
     raw_payloads = json.loads(json_data)["data"]
     added_transactions = 0

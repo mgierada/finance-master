@@ -6,7 +6,6 @@ from fastapi.responses import JSONResponse
 from finance_analyzer.read_data import (
     get_summary_by_month,
     get_summary_by_year,
-    read_and_clean_data,
 )
 
 from fastapi import APIRouter, Depends, HTTPException
