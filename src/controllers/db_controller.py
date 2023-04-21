@@ -42,7 +42,7 @@ async def populate_db(
             amount=float(raw_payload["amount"]),
             currency=raw_payload["currency"],
         )
-        # If date, category and amount and description already exists in db, skip that transaction
+        # If date, category, amount and description already exists in db, skip that transaction
         if is_entry_already_in_db(db, transaction_create):
             continue
         added_transactions += 1
