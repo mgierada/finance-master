@@ -1,4 +1,3 @@
-import json
 import crud
 from database import get_db
 import typing as t

@@ -3,12 +3,10 @@ import crud
 from database import get_db
 from fastapi.responses import JSONResponse
 
-from finance_analyzer.read_data import (
-    convert_bytes_to_dataframe,
-)
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 import schemas
+from services.finance_analyzer.read_data import convert_bytes_to_dataframe
 from sqlalchemy.orm import Session
 from utils.check_duplicates import is_entry_already_in_db
 
