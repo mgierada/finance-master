@@ -3,14 +3,13 @@ import crud
 from database import get_db
 
 from fastapi.responses import JSONResponse
-from finance_analyzer.read_data import (
-    get_summary_by_month,
-    get_summary_by_year,
-    read_and_clean_data,
-)
 
 from fastapi import APIRouter, Depends, HTTPException
 from services.convert_to_dataframe import convert_db_query_to_dataframe
+from services.finance_analyzer.process_data import (
+    get_summary_by_month,
+    get_summary_by_year,
+)
 from sqlalchemy.orm import Session
 
 router = APIRouter()

@@ -1,12 +1,8 @@
-import json
 import crud
 from database import get_db
 import typing as t
 
 from fastapi.responses import JSONResponse
-from finance_analyzer.read_data import (
-    read_and_clean_data,
-)
 
 from fastapi import APIRouter, Depends
 import schemas

@@ -143,3 +143,5 @@ postgres-data
 *.xml
 *.iml
 *.idea
+
+.DS_Store

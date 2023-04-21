@@ -1,30 +1,5 @@
 import pandas as pd
-import os
 import typing as t
-
-from finance_analyzer.constants import COLUMNS
-
-
-def read_and_clean_data() -> pd.DataFrame:
-    """
-    Read the data from the csv file and clean it.
-    """
-    path_to_csv = os.path.join(os.path.dirname(__file__), "data.csv")
-    raw_dataframe = pd.read_csv(path_to_csv, sep=";", index_col=False)
-    raw_dataframe = raw_dataframe.rename(columns=COLUMNS)
-    raw_dataframe["description"] = raw_dataframe["description"].apply(
-        lambda x: " ".join(x.strip().split())
-    )
-    raw_dataframe["amount"] = raw_dataframe["raw_amount"].str.extract("([\d,-\. ]+)")
-    raw_dataframe["amount"] = raw_dataframe["amount"].str.replace(" ", "")
-    raw_dataframe["amount"] = (
-        raw_dataframe["amount"].str.replace(",", ".").astype(float)
-    )
-    raw_dataframe["currency"] = raw_dataframe["raw_amount"].str.extract("([A-Z]{3})")
-    clean_dataframe = raw_dataframe.drop(["raw_amount", "Unnamed: 5"], axis=1)
-    df_copy = clean_dataframe.copy()
-    df_copy["date"] = pd.to_datetime(df_copy["date"])
-    return df_copy
 
 
 def get_income_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -126,10 +101,3 @@ def summary(income_totals: pd.DataFrame, expense_totals: pd.DataFrame) -> pd.Dat
     summary["income_pct_change"] = summary["income"].pct_change() * 100
     summary["profit"] = summary["income"] + summary["expense"]
     return summary.sort_values(by="date", ascending=False)
-
-
-if __name__ == "__main__":
-    df = read_and_clean_data()
-    print(df)
-    # summary_by_month = get_summary_by_month(df)
-    # summary_by_year = get_summary_by_year(df)
