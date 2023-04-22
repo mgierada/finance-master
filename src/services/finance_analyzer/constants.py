@@ -13,3 +13,4 @@ CSV_HEADER = (
 COLUMNS_TO_BE_DROPPED = ["raw_amount", "Unnamed: 6"]
 
 ZUS = "ZAKŁAD UBEZPIECZEŃ SPOŁECZNYCH"
+VAT7 = "VAT-7"
