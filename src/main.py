@@ -1,5 +1,10 @@
 from fastapi import FastAPI
-from controllers import db_controller, transactions_controller, summary_controller
+from controllers import (
+    db_controller,
+    tax_controller,
+    transactions_controller,
+    summary_controller,
+)
 from models.transactions import Transaction
 from database import engine
 
@@ -21,4 +26,9 @@ app.include_router(
     db_controller.router,
     prefix="/db",
     tags=["db"],
+)
+app.include_router(
+    tax_controller.router,
+    prefix="/tax",
+    tags=["tax"],
 )

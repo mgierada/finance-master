@@ -41,6 +41,7 @@ def get_data_per_month(df: pd.DataFrame, month_number: int, year: int) -> pd.Dat
     """
     For a given cleaned dataframe, return a dataframe with the data for a given month and year.
     """
+    # TODO this is probably not needed
     df_copy = df.copy()
     df_copy["date"] = pd.to_datetime(df_copy["date"])
     return df_copy[
