@@ -4,6 +4,7 @@ from database import get_db
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from services.convert_to_dataframe import convert_db_query_to_dataframe
+from services.finance_analyzer.take_home_pay import get_take_home_pay_monthly
 from sqlalchemy.orm import Session
 
 
