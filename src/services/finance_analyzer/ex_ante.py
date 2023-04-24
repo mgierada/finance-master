@@ -7,6 +7,8 @@ from services.finance_analyzer.constants import (
 )
 import typing as t
 
+from utils.utils import round_to_two_decimals_in_dict, round_to_two_decimals_in_float
+
 
 def get_ex_ante(overhours: int = 0) -> dict:
     """
@@ -21,9 +23,9 @@ def get_ex_ante(overhours: int = 0) -> dict:
         + ex_ante_expenses_summary["total_expenses"]
     )
     return {
-        "income": ex_ante_income_summary,
-        "expenses": ex_ante_expenses_summary,
-        "take-home-pay": take_home_pay,
+        "income": round_to_two_decimals_in_dict(ex_ante_income_summary),
+        "expenses": round_to_two_decimals_in_dict(ex_ante_expenses_summary),
+        "take-home-pay": round_to_two_decimals_in_float(take_home_pay),
     }
 
 

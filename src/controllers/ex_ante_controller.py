@@ -10,7 +10,7 @@ router = APIRouter()
 async def ex_ante_controller(overhours: int = 0) -> JSONResponse:
     return JSONResponse(
         content={
-            "message": "Ex ante income and expenses for the end of current month",
+            "message": "Ex ante income and expenses for the end of the current month.",
             "data": get_ex_ante(overhours),
         }
     )
