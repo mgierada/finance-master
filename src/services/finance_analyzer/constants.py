@@ -1,3 +1,8 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 COLUMNS = {
     "#Data operacji": "date",
     "#Opis operacji": "description",
@@ -19,3 +24,5 @@ VAT_PPE = "URZĄD SKARBOWY, PPE"
 CONST_EXPENSES = [ZUS, VAT_7, VAT_PPE]
 CONST_EXPENSES_REGEX = "|".join(CONST_EXPENSES)
 UNWANTED_FIELDS_TAX_RESPONSE = ["index"]
+BASED_SALARY = int(os.environ.get("BASED_SALARY", 1))
+MONTHLY_HOUR_MEAN = int(os.environ.get("MONTHLY_HOUR_MEAN", 1))
