@@ -28,7 +28,12 @@ async def get_expenses_zus_controller(
     json_data = zus_expenses.to_json(orient="table")
     if with_schema:
         return JSONResponse(content=json.loads(json_data))
-    return JSONResponse(content=json.loads(json_data)["data"])
+    return JSONResponse(
+        content={
+            "message": "ZUS expenses per month",
+            "data": json.loads(json_data)["data"],
+        }
+    )
 
 
 @router.get("/zus/total")
@@ -40,7 +45,12 @@ async def get_expenses_zus_total_controller(
     json_data = zus_expenses_total.to_json(orient="table")
     if with_schema:
         return JSONResponse(content=json.loads(json_data))
-    return JSONResponse(content=json.loads(json_data)["data"])
+    return JSONResponse(
+        content={
+            "message": "ZUS expenses per year",
+            "data": json.loads(json_data)["data"],
+        }
+    )
 
 
 @router.get("/vat-7")
@@ -52,7 +62,12 @@ async def get_expenses_vat7_controller(
     json_data = vat7_expenses.to_json(orient="table")
     if with_schema:
         return JSONResponse(content=json.loads(json_data))
-    return JSONResponse(content=json.loads(json_data)["data"])
+    return JSONResponse(
+        content={
+            "message": "VAT-7 expenses per month",
+            "data": json.loads(json_data)["data"],
+        }
+    )
 
 
 @router.get("/vat-7/total")
@@ -64,7 +79,12 @@ async def get_expenses_vat7_total_controller(
     json_data = vat7_expenses_total.to_json(orient="table")
     if with_schema:
         return JSONResponse(content=json.loads(json_data))
-    return JSONResponse(content=json.loads(json_data)["data"])
+    return JSONResponse(
+        content={
+            "message": "VAT-7 expenses per year",
+            "data": json.loads(json_data)["data"],
+        }
+    )
 
 
 @router.get("/vat-ppe")
@@ -76,7 +96,12 @@ async def get_expenses_vat_ppe_controller(
     json_data = vat_ppe_expenses.to_json(orient="table")
     if with_schema:
         return JSONResponse(content=json.loads(json_data))
-    return JSONResponse(content=json.loads(json_data)["data"])
+    return JSONResponse(
+        content={
+            "message": "VAT PPE expenses per month",
+            "data": json.loads(json_data)["data"],
+        }
+    )
 
 
 @router.get("/vat-ppe/total")
@@ -88,4 +113,9 @@ async def get_expenses_vat_ppe_total_controller(
     json_data = vat_ppe_expenses_total.to_json(orient="table")
     if with_schema:
         return JSONResponse(content=json.loads(json_data))
-    return JSONResponse(content=json.loads(json_data)["data"])
+    return JSONResponse(
+        content={
+            "message": "VAT PPE expenses per year",
+            "data": json.loads(json_data)["data"],
+        }
+    )
