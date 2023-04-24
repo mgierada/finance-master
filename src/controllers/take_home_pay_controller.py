@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 router = APIRouter()
 
 
-@router.get("/take-home-pay")
+@router.get("/")
 async def take_home_pay_monthly(
     db: Session = Depends(get_db), with_schema: bool = False
 ) -> JSONResponse:

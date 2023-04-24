@@ -15,10 +15,17 @@ def get_take_home_pay_monthly(df: pd.DataFrame) -> pd.DataFrame:
     income_data = get_income_data(df)
     expense_data = get_expense_data(df)
     all_const_exp = expense_data[expense_data["description"].str.contains(filter_regex)]
+    all_const_exp_monthly = get_monthly_totals(all_const_exp)
     income_monthly = get_monthly_totals(income_data)
 
-    take_home_pay_monthly = pd.DataFrame()
-    take_home_pay_monthly["take_home_pay"] = (
-        income_monthly["amount"] + all_const_exp["amount"]
+    take_home_pay = pd.merge(
+        all_const_exp_monthly, income_monthly, on="date", how="outer"
     )
-    return take_home_pay_monthly
+    take_home_pay.rename(
+        columns={"amount_x": "const_expenses", "amount_y": "income"}, inplace=True
+    )
+    take_home_pay.fillna(0, inplace=True)
+    take_home_pay["take_home_pay"] = (
+        take_home_pay["income"] + take_home_pay["const_expenses"]
+    )
+    return take_home_pay.sort_values(by="date", ascending=False)

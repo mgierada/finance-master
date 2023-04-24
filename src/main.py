@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from controllers import (
     db_controller,
+    take_home_pay_controller,
     tax_controller,
     transactions_controller,
     summary_controller,
@@ -31,4 +32,9 @@ app.include_router(
     tax_controller.router,
     prefix="/tax",
     tags=["tax"],
+)
+app.include_router(
+    take_home_pay_controller.router,
+    prefix="/take-home-pay",
+    tags=["take-home-pay"],
 )
