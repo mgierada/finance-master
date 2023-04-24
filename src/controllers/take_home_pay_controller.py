@@ -4,6 +4,7 @@ from database import get_db
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from services.convert_to_dataframe import convert_db_query_to_dataframe
+from services.finance_analyzer.constants import CONST_EXPENSES
 from services.finance_analyzer.take_home_pay import get_take_home_pay_monthly
 from sqlalchemy.orm import Session
 
@@ -25,7 +26,7 @@ async def take_home_pay_monthly(
         return JSONResponse(content=json.loads(json_data))
     return JSONResponse(
         content={
-            "message": "Take home pay monthly as a difference between income and constant expenses",
+            "message": f"Take home pay monthly as a difference between income and constant expenses {CONST_EXPENSES}",
             "data": json.loads(json_data)["data"],
         }
     )
