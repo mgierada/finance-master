@@ -23,4 +23,9 @@ async def take_home_pay_monthly(
     json_data = take_home_pay_monthly.to_json(orient="table")
     if with_schema:
         return JSONResponse(content=json.loads(json_data))
-    return JSONResponse(content=json.loads(json_data)["data"])
+    return JSONResponse(
+        content={
+            "message": "Take home pay monthly as a difference between income and constant expenses",
+            "data": json.loads(json_data)["data"],
+        }
+    )
