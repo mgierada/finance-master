@@ -5,6 +5,7 @@ from controllers import (
     tax_controller,
     transactions_controller,
     summary_controller,
+    ex_ante_controller,
 )
 from models.transactions import Transaction
 from database import engine
@@ -37,4 +38,9 @@ app.include_router(
     take_home_pay_controller.router,
     prefix="/take-home-pay",
     tags=["take-home-pay"],
+)
+app.include_router(
+    ex_ante_controller.router,
+    prefix="/ex-ante",
+    tags=["ex-ante"],
 )

@@ -1,5 +1,4 @@
 import json
-import crud
 from database import get_db
 
 from fastapi.responses import JSONResponse
