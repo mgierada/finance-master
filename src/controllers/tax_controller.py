@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 from services.convert_to_dataframe import (
     get_all_transactions_dataframe,
 )
+from services.finance_analyzer.constants import UNWANTED_FIELDS_TAX_RESPONSE
 from services.finance_analyzer.tax import (
     get_expenses_zus,
     get_expenses_vat7,
@@ -14,6 +15,7 @@ from services.finance_analyzer.tax import (
     get_expenses_vat_ppe_total_per_year,
 )
 from sqlalchemy.orm import Session
+from utils.utils import filter_unwanted_fields_from_dict
 
 
 router = APIRouter()
@@ -31,7 +33,14 @@ async def get_expenses_zus_controller(
     return JSONResponse(
         content={
             "message": "ZUS expenses per month",
-            "data": json.loads(json_data)["data"],
+            "data": list(
+                map(
+                    lambda x: filter_unwanted_fields_from_dict(
+                        x, UNWANTED_FIELDS_TAX_RESPONSE
+                    ),
+                    json.loads(json_data)["data"],
+                )
+            ),
         }
     )
 
@@ -65,7 +74,14 @@ async def get_expenses_vat7_controller(
     return JSONResponse(
         content={
             "message": "VAT-7 expenses per month",
-            "data": json.loads(json_data)["data"],
+            "data": list(
+                map(
+                    lambda x: filter_unwanted_fields_from_dict(
+                        x, UNWANTED_FIELDS_TAX_RESPONSE
+                    ),
+                    json.loads(json_data)["data"],
+                )
+            ),
         }
     )
 
@@ -99,7 +115,14 @@ async def get_expenses_vat_ppe_controller(
     return JSONResponse(
         content={
             "message": "VAT PPE expenses per month",
-            "data": json.loads(json_data)["data"],
+            "data": list(
+                map(
+                    lambda x: filter_unwanted_fields_from_dict(
+                        x, UNWANTED_FIELDS_TAX_RESPONSE
+                    ),
+                    json.loads(json_data)["data"],
+                )
+            ),
         }
     )
 

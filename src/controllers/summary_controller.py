@@ -4,9 +4,8 @@ from database import get_db
 
 from fastapi.responses import JSONResponse
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from services.convert_to_dataframe import (
-    convert_db_query_to_dataframe,
     get_all_transactions_dataframe,
 )
 from services.finance_analyzer.process_data import (
