@@ -27,4 +27,6 @@ UNWANTED_FIELDS_TAX_RESPONSE = ["index"]
 
 BASED_SALARY = int(os.environ.get("BASED_SALARY", 1))
 MONTHLY_HOUR_MEAN = int(os.environ.get("MONTHLY_HOUR_MEAN", 1))
-ZUS_MONTHLY_EXPENSES = float(os.environ.get("ZUS_MONTHLY_EXPENSES", 1.01))
+ZUS_MONTHLY_EXPENSES = float(os.environ.get("ZUS_MONTHLY_EXPENSES", 1))
+BONUS_EXPENSE = float(os.environ.get("BONUS_EXPENSE", 1))
+BONUS_INCOME = float(os.environ.get("BONUS_INCOME", 1))
