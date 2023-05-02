@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from controllers import (
+    category_controller,
     db_controller,
     take_home_pay_controller,
     tax_controller,
@@ -43,4 +44,9 @@ app.include_router(
     ex_ante_controller.router,
     prefix="/ex-ante",
     tags=["ex-ante"],
+)
+app.include_router(
+    category_controller.router,
+    prefix="/category",
+    tags=["catagory"],
 )
