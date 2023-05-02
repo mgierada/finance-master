@@ -62,9 +62,13 @@ def get_transactions(
         t.List[Transaction]: The transactions
     """
     return (
-        db.query(Transaction).all()
+        db.query(Transaction).order_by(Transaction.date.desc()).all()
         if retrieve_all_entries
-        else db.query(Transaction).offset(skip).limit(limit).all()
+        else db.query(Transaction)
+        .order_by(Transaction.date.desc())
+        .offset(skip)
+        .limit(limit)
+        .all()
     )
 
 

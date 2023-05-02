@@ -15,7 +15,7 @@ router = APIRouter()
 async def get_tranactions(
     db: Session = Depends(get_db),
     skip: int = 0,
-    limit: int = 100,
+    limit: int = 10,
 ):
     return crud.get_transactions(db, skip, limit, retrieve_all_entries=False)
 
