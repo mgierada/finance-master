@@ -15,10 +15,16 @@ router = APIRouter()
 
 
 def _get_current_month_number():
+    """
+    Returns the current month as an integer.
+    """
     return datetime.now().month
 
 
 def _get_current_year_number():
+    """
+    Returns the current year as an integer.
+    """
     return datetime.now().year
 
 
