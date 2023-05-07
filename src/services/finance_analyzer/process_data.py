@@ -33,7 +33,6 @@ def get_expense_data_per_month(
     For a given cleaned dataframe, return a dataframe with the expense data for a given month and year.
     """
     df = get_expense_data(df)
-
     return get_data_per_month(df, month_number, year)
 
 
