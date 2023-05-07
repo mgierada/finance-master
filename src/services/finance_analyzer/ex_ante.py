@@ -10,7 +10,7 @@ import typing as t
 from utils.utils import round_to_two_decimals_in_dict, round_to_two_decimals_in_float
 
 
-def get_ex_ante(overhours: int = 0) -> dict:
+def get_ex_ante(overhours: int = 0) -> t.Dict[str, float | t.Dict[str, float]]:
     """
     Calculate ex ante income and expenses for the end of current month.
     """

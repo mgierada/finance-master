@@ -26,27 +26,44 @@ def get_income_data_per_month(
     return get_data_per_month(income_date, month_number, year)
 
 
+def get_income_data_per_year(df: pd.DataFrame, year: int) -> pd.DataFrame:
+    """
+    For a given cleaned dataframe, return a dataframe with the income data for a given year.
+    """
+    income_date = get_income_data(df)
+    return get_data_per_year(income_date, year)
+
+
 def get_expense_data_per_month(
     df: pd.DataFrame, month_number: int, year: int
 ) -> pd.DataFrame:
     """
     For a given cleaned dataframe, return a dataframe with the expense data for a given month and year.
     """
-    df = get_income_data(df)
+    expense_data = get_expense_data(df)
+    return get_data_per_month(expense_data, month_number, year)
 
-    return get_data_per_month(df, month_number, year)
+
+def get_expense_data_per_year(df: pd.DataFrame, year: int) -> pd.DataFrame:
+    """
+    For a given cleaned dataframe, return a dataframe with the expense data for a given year.
+    """
+    expense_data = get_expense_data(df)
+    return get_data_per_year(expense_data, year)
 
 
 def get_data_per_month(df: pd.DataFrame, month_number: int, year: int) -> pd.DataFrame:
     """
     For a given cleaned dataframe, return a dataframe with the data for a given month and year.
     """
-    # TODO this is probably not needed
-    df_copy = df.copy()
-    df_copy["date"] = pd.to_datetime(df_copy["date"])
-    return df_copy[
-        (df_copy["date"].dt.month == month_number) & (df_copy["date"].dt.year == year)
-    ]
+    return df[(df["date"].dt.month == month_number) & (df["date"].dt.year == year)]
+
+
+def get_data_per_year(df: pd.DataFrame, year: int) -> pd.DataFrame:
+    """
+    For a given cleaned dataframe, return a dataframe with the data for a given year.
+    """
+    return df[(df["date"].dt.year == year)]
 
 
 def get_monthly_totals(df: pd.DataFrame) -> pd.DataFrame:
