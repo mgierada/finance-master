@@ -5,6 +5,7 @@ import typing as t
 from fastapi.responses import JSONResponse
 
 from fastapi import APIRouter, Depends
+from middleware.validate_token import validate_token
 import schemas
 from sqlalchemy.orm import Session
 
@@ -13,6 +14,7 @@ router = APIRouter()
 
 @router.get("/", response_model=t.List[schemas.Transactions])
 async def get_tranactions(
+    token: str = Depends(validate_token),
     db: Session = Depends(get_db),
     skip: int = 0,
     limit: int = 10,
