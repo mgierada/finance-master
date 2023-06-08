@@ -4,6 +4,7 @@ from database import get_db
 from fastapi.responses import JSONResponse
 
 from fastapi import APIRouter, Depends
+from middleware.validate_token import validate_token
 from services.convert_to_dataframe import get_all_transactions_dataframe
 from services.finance_analyzer.categories import (
     get_data_by_category,
@@ -35,6 +36,7 @@ def _get_current_year_number():
 
 @router.get("/monthly/expenses")
 async def monthly_expenses_by_categories(
+    _: str = Depends(validate_token),
     db: Session = Depends(get_db),
     month: int = _get_current_month_number(),
     year: int = _get_current_year_number(),
@@ -54,6 +56,7 @@ async def monthly_expenses_by_categories(
 
 @router.get("/yearly/expenses")
 async def yearly_expenses_by_categories(
+    _: str = Depends(validate_token),
     db: Session = Depends(get_db),
     year: int = _get_current_year_number(),
 ) -> JSONResponse:
@@ -71,6 +74,7 @@ async def yearly_expenses_by_categories(
 
 @router.get("/monthly/income")
 async def monthly_income_by_categories(
+    _: str = Depends(validate_token),
     db: Session = Depends(get_db),
     month: int = _get_current_month_number(),
     year: int = _get_current_year_number(),
@@ -90,6 +94,7 @@ async def monthly_income_by_categories(
 
 @router.get("/yearly/income")
 async def yearly_income_by_categories(
+    _: str = Depends(validate_token),
     db: Session = Depends(get_db),
     year: int = _get_current_year_number(),
 ) -> JSONResponse:
