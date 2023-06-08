@@ -2,6 +2,7 @@ import json
 from database import get_db
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
+from middleware.validate_token import validate_token
 from services.convert_to_dataframe import (
     get_all_transactions_dataframe,
 )
@@ -23,7 +24,9 @@ router = APIRouter()
 
 @router.get("/zus")
 async def get_expenses_zus_controller(
-    db: Session = Depends(get_db), with_schema: bool = False
+    _: str = Depends(validate_token),
+    db: Session = Depends(get_db),
+    with_schema: bool = False,
 ) -> JSONResponse:
     all_transactions_df = get_all_transactions_dataframe(db)
     zus_expenses = get_expenses_zus(all_transactions_df)
@@ -47,7 +50,9 @@ async def get_expenses_zus_controller(
 
 @router.get("/zus/total")
 async def get_expenses_zus_total_controller(
-    db: Session = Depends(get_db), with_schema: bool = False
+    _: str = Depends(validate_token),
+    db: Session = Depends(get_db),
+    with_schema: bool = False,
 ) -> JSONResponse:
     all_transactions_df = get_all_transactions_dataframe(db)
     zus_expenses_total = get_expenses_zus_total_per_year(all_transactions_df)
@@ -64,7 +69,9 @@ async def get_expenses_zus_total_controller(
 
 @router.get("/vat-7")
 async def get_expenses_vat7_controller(
-    db: Session = Depends(get_db), with_schema: bool = False
+    _: str = Depends(validate_token),
+    db: Session = Depends(get_db),
+    with_schema: bool = False,
 ) -> JSONResponse:
     all_transactions_df = get_all_transactions_dataframe(db)
     vat7_expenses = get_expenses_vat7(all_transactions_df)
@@ -88,7 +95,9 @@ async def get_expenses_vat7_controller(
 
 @router.get("/vat-7/total")
 async def get_expenses_vat7_total_controller(
-    db: Session = Depends(get_db), with_schema: bool = False
+    _: str = Depends(validate_token),
+    db: Session = Depends(get_db),
+    with_schema: bool = False,
 ) -> JSONResponse:
     all_transactions_df = get_all_transactions_dataframe(db)
     vat7_expenses_total = get_expenses_vat7_total_per_year(all_transactions_df)
@@ -105,7 +114,9 @@ async def get_expenses_vat7_total_controller(
 
 @router.get("/vat-ppe")
 async def get_expenses_vat_ppe_controller(
-    db: Session = Depends(get_db), with_schema: bool = False
+    _: str = Depends(validate_token),
+    db: Session = Depends(get_db),
+    with_schema: bool = False,
 ) -> JSONResponse:
     all_transactions_df = get_all_transactions_dataframe(db)
     vat_ppe_expenses = get_expenses_vat_ppe(all_transactions_df)
@@ -129,7 +140,9 @@ async def get_expenses_vat_ppe_controller(
 
 @router.get("/vat-ppe/total")
 async def get_expenses_vat_ppe_total_controller(
-    db: Session = Depends(get_db), with_schema: bool = False
+    _: str = Depends(validate_token),
+    db: Session = Depends(get_db),
+    with_schema: bool = False,
 ) -> JSONResponse:
     all_transactions_df = get_all_transactions_dataframe(db)
     vat_ppe_expenses_total = get_expenses_vat_ppe_total_per_year(all_transactions_df)

@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from middleware.validate_token import validate_token
 import schemas
 from services.finance_analyzer.read_data import convert_bytes_to_dataframe
 from sqlalchemy.orm import Session
@@ -17,7 +18,9 @@ router = APIRouter()
 
 @router.post("/populate", response_model=schemas.Transactions)
 async def populate_db(
-    db: Session = Depends(get_db), file: UploadFile = File(...)
+    _: str = Depends(validate_token),
+    db: Session = Depends(get_db),
+    file: UploadFile = File(...),
 ) -> JSONResponse:
     try:
         df = convert_bytes_to_dataframe(file.file.read())
