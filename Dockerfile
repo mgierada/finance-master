@@ -29,6 +29,6 @@ RUN apt-get update && \
 # copy project
 COPY ./src /src/
 
-ENV SQLALCHEMY_DATABASE_URL postgresql://postgres:zpQv6v7OGNC5XGS@finance-master-db.flycast:5432
+ENV SQLALCHEMY_DATABASE_URL = postgresql://postgres:postgres@db:5432/postgres
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
